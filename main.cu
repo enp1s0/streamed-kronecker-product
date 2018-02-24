@@ -3,8 +3,8 @@
 #include <cublas_v2.h>
 #include <chrono>
 
-// A,Gの行列のサイズ N x N
-const int N = 100;
+// A,Gの行列のサイズ N x N (デフォルト値)
+const int DEF_N = 200;
 
 // バッチサイズ
 const int C = 5000;
@@ -13,7 +13,7 @@ const int C = 5000;
 const int CALC = 100;
 
 // A kp B * vec(X)
-void k(float *A,float *B,float *X,float *R,cublasHandle_t cublas){
+void k(float *A,float *B,float *X,float *R,int N,cublasHandle_t cublas){
 	float one = 1.0f,zero = 0.0f;
 	cublasSgemm(
 			cublas,
@@ -40,19 +40,26 @@ void k(float *A,float *B,float *X,float *R,cublasHandle_t cublas){
 }
 
 // バッチで
-void batched_k(float *A[C],float *B[C],float *X[C],float *R[C],cublasHandle_t cublas[C]){
+void batched_k(float *A[C],float *B[C],float *X[C],float *R[C],int N,cublasHandle_t cublas[C]){
 	for(int i = 0;i < C;i++){
-		k(A[i],B[i],X[i],R[i],cublas[i]);
+		k(A[i],B[i],X[i],R[i],N,cublas[i]);
 	}
 }
 
-int main(){
+int main(int argc,char **argv){
 	float *A[C];
 	float *B[C];
 	float *X[C];
 	float *R[C];
 	cublasHandle_t cublas[C];
 	cudaStream_t stream[C];
+
+	int N = DEF_N;
+
+	if(argc > 1){
+		N = std::stoi(argv[1]);
+	}
+
 
 	std::cout<<"行列サイズ : "<<N<<" x "<<N<<std::endl
 		<<"バッチサイズ : "<<C<<std::endl
@@ -70,25 +77,25 @@ int main(){
 		cublasSetStream( cublas[i], stream[i]);
 	}
 	// ウォームアップ
-	batched_k(A,B,X,R,cublas);
+	batched_k(A,B,X,R,N,cublas);
 #ifdef BATCHED
 		auto start = std::chrono::system_clock::now();
-		for(int i = 0;i < CALC;i++)batched_k(A,B,X,R,cublas);
+		for(int i = 0;i < CALC;i++)batched_k(A,B,X,R,N,cublas);
 		cudaDeviceSynchronize();
 		auto stop = std::chrono::system_clock::now();
-		std::cout<<std::chrono::duration_cast<std::chrono::milliseconds>(stop-start).count()/static_cast<float>(CALC)<<"[ms]"<<std::endl;
+		std::cout<<"計算時間 : "<<std::chrono::duration_cast<std::chrono::milliseconds>(stop-start).count()/static_cast<float>(CALC)<<" [ms]"<<std::endl;
 #else	
 		cublasHandle_t cub;
 		cublasCreate( &cub );
 		auto start = std::chrono::system_clock::now();
 		for(int j = 0;j < CALC;j++){
 			for(int i = 0;i < C;i++){
-				k(A[i],B[i],X[i],R[i],cub);
+				k(A[i],B[i],X[i],R[i],N,cub);
 			}
 		}
 		cudaDeviceSynchronize();
 		auto stop = std::chrono::system_clock::now();
-		std::cout<<"seq "<<std::chrono::duration_cast<std::chrono::milliseconds>(stop-start).count()/static_cast<float>(CALC)<<"[ms]"<<std::endl;
+		std::cout<<"計算時間 : "<<std::chrono::duration_cast<std::chrono::milliseconds>(stop-start).count()/static_cast<float>(CALC)<<" [ms]"<<std::endl;
 		cublasDestroy( cub );
 #endif
 
