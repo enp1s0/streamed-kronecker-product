@@ -19,7 +19,7 @@ print(df)
 colorlist = ["#2ca9e1","#e95295","#aacf53","#f8b500"]
 
 data = df["r"]
-m_size=range(10,300,10)
+m_size=range(100,3100,100)
 
 plt.axhline(y=0)
 plt.ylim(ymax=2.0)
