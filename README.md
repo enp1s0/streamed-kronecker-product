@@ -5,6 +5,20 @@ cupyで性能差が見られなかったので生CUDAで書いてみようと
 - kp.py : BatchedKroneckerProductのPythonのコード 
 - main.cu : BatchedKroneckerProductの生CUDAのコード
 
+## Cupyの問題点
+
+- matmulで呼んでいるcublasSgemmの転置引数がCUBLAS\_OP\_Nで固定されている  
+→ 転置した行列の積を計算したければtranspose()を呼ばなくてはいけない  
+→ cupy.copyが呼ばれる(無駄)
+
+- cudaMemsetがいたるところで呼ばれている  
+→ この処理が重いのでクロネッカー積をバッチ処理しても差が出ない
+
+### 解決法
+- cublasSgemmを直接呼ぶ
+- cupy使わない(chainerもできれば使わない)
+- ボトルネックでなければ無視
+
 
 ## 実験
 ### 環境
