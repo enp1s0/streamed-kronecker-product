@@ -7,10 +7,10 @@
 const int DEF_N = 200;
 
 // バッチサイズ
-const int C = 5000;
+const int C = 30;
 
 // 計算回数
-const int CALC = 100;
+const int CALC = 10;
 
 // A kp B * vec(X)
 void k(float *A,float *B,float *X,float *R,int N,cublasHandle_t cublas){
@@ -26,6 +26,7 @@ void k(float *A,float *B,float *X,float *R,int N,cublasHandle_t cublas){
 			&zero,
 			R,N
 			);
+	// Rがちゃんと計算されているかは知らない
 	cublasSgemm(
 			cublas,
 			CUBLAS_OP_N,
