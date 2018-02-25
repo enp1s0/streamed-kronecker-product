@@ -3,7 +3,17 @@ import time
 
 def kronecker_product_vec(A,B,X,stream=None):
     with stream:
-        return cupy.reshape(cupy.matmul(cupy.matmul(A.transpose(),X),B), (-1,1))
+        # 一時的にCなどに代入しないとcupy.copyが呼ばれて関数の速度が劣化する
+        # A.transpose()でsupy.copyが呼ばれているみたいですごく嫌
+        # →cublasSgemmの引数でどうにかしてほしい
+        # →matmulが呼んでいるcublasSgemmのtransの引数は0で固定っぽい
+        C = cupy.matmul(A.transpose(),X)
+        """cupy.cuda.cublas.sgemm(cuda.Device().cublas_handle,
+                1,
+                0,
+                )"""
+        D = cupy.matmul(C,B)
+        return cupy.reshape(D, (-1,1))
 
 def kronecker_product_vec_batched(lst):
     # lst = [[A,B,X,stream],...]
