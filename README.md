@@ -14,6 +14,10 @@ cupyで性能差が見られなかったので生CUDAで書いてみようと
 - cudaMemsetがいたるところで呼ばれている  
 → この処理が重いのでクロネッカー積をバッチ処理しても差が出ない
 
+- matmulがstream指定を無視している気がする  
+→ nvprofで見るとgemm計算でのstream idが変化していない  
+→ Batchedできていない
+
 ### 解決法
 - cublasSgemmを直接呼ぶ→転置の問題は解決
 - cupy使わない(chainerもできれば使わない)→面倒
