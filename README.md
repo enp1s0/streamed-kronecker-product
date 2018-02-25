@@ -1,6 +1,10 @@
 # Batched Kronecker Product Test
-
 cupyで性能差が見られなかったので生CUDAで書いてみようと
+
+## ファイル
+- kp.py : BatchedKroneckerProductのPythonのコード 
+- main.cu : BatchedKroneckerProductの生CUDAのコード
+
 
 ## 実験
 ### 環境
