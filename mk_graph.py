@@ -19,13 +19,13 @@ print(df)
 colorlist = ["#2ca9e1","#e95295","#aacf53","#f8b500"]
 
 data = df["r"]
-m_size=range(0,29)
+m_size=range(10,300,10)
 
 plt.axhline(y=0)
 plt.ylim(ymax=2.0)
 plt.ylim(ymin=1.0)
 plt.xlim(xmin=0)
-plt.xlim(xmax=50)
+plt.xlim(xmax=300)
 
 
 plt.xlabel("matrix size N x N (N)")
