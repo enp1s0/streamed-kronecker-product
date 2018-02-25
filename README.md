@@ -1,5 +1,4 @@
 # Batched Kronecker Product Test
-cupyで性能差が見られなかったので生CUDAで書いてみようと  
 正しくはBatchedではなくStreamedだけど
 [StreamedとBatchedのgemm比較](https://devblogs.nvidia.com/cublas-strided-batched-matrix-multiply/)
 
