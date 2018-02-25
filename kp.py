@@ -44,7 +44,6 @@ def main():
     kronecker_product_vec_batched(input_lst)
     device.synchronize()
 
-    """
     stream = cupy.cuda.stream.Stream()
     start_time = time.time()
     for c in range(0,100):
@@ -53,7 +52,6 @@ def main():
     device.synchronize()
     elapsed_time = (time.time() - start_time)/100*1000
     print("seq : elapsed time = ",elapsed_time," [ms]")
-    """
 
     start_time = time.time()
     for c in range(0,100):
