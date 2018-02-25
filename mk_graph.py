@@ -28,7 +28,7 @@ plt.xlim(xmin=0)
 plt.xlim(xmax=300)
 
 
-plt.xlabel("matrix size N x N (N)")
+plt.xlabel("Matrix size N x N (N)")
 plt.ylabel("Speed up")
 
 
