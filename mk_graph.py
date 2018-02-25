@@ -35,4 +35,4 @@ plt.ylabel("Speed up")
 plt.plot(m_size,data,"r",color=colorlist.pop(),markersize=2)
 plt.legend()
 
-plt.savefig("speedup.pdf", bbox_inches="tight")
+plt.savefig("speedup.png", bbox_inches="tight")
