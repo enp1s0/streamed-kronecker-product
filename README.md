@@ -29,6 +29,7 @@
 - main.cu : BatchedKroneckerProductの生CUDAのコード
 
 ## Cupyの問題点
+cupyでのコードを実行してnvprofで解析して思ったこと
 
 - matmulで呼んでいるcublasSgemmの転置引数がCUBLAS\_OP\_Nで固定されている  
 → 転置した行列の積を計算したければtranspose()を呼ばなくてはいけない  
