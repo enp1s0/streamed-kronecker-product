@@ -23,9 +23,9 @@ m_size=range(100,3100,100)
 
 plt.axhline(y=0)
 plt.ylim(ymax=2.0)
-plt.ylim(ymin=1.0)
+plt.ylim(ymin=0.0)
 plt.xlim(xmin=0)
-plt.xlim(xmax=300)
+plt.xlim(xmax=3000)
 
 
 plt.xlabel("Matrix size N x N (N)")
