@@ -3,6 +3,28 @@ cupyで性能差が見られなかったので生CUDAで書いてみようと
 正しくはBatchedではなくStreamedだけど
 [StreamedとBatchedのgemm比較](https://devblogs.nvidia.com/cublas-strided-batched-matrix-multiply/)
 
+## 結論
+行列サイズがある程度小さいとBatchedで高速化できる  
+大きいと返って遅くなる(なぜだろ)
+
+## 実験
+### 環境
+- GF GTX 1080
+
+### 高速化率
+- forで回すのに対しstreamを分けて並列化するとどれほど速くなるか
+- バッチサイズ : 30
+- 計算回数 : 100
+- 行列サイズ : 変化
+- (y=1のgridだけ太くしたかった)
+
+![グラフ](./speedup.png)
+
+
+行列のサイズがある程度の大きさまではバッチ処理の方が速くなるみたい
+
+
+
 ## ファイル
 - kp.py : BatchedKroneckerProductのPythonのコード 
 - main.cu : BatchedKroneckerProductの生CUDAのコード
@@ -26,22 +48,3 @@ cupyで性能差が見られなかったので生CUDAで書いてみようと
 - ボトルネックでなければ無視→願う
 
 
-## 実験
-生CUDAで
-
-### 環境
-- GF GTX 1080
-
-### 結果
-
-### 高速化率
-- バッチサイズ : 30
-- 計算回数 : 100
-- 行列サイズ : 変化
-- (y=1のgridだけ太くしたかった)
-
-![グラフ](./speedup.png)
-
-
-
-行列のサイズがある程度の大きさまではバッチ処理の方が速くなるみたい
