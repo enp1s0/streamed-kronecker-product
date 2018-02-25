@@ -4,7 +4,7 @@ import pandas as pd
 import os
 
 df = pd.read_csv("log-k", encoding="UTF-8")
-plt.figure(figsize=(6, 13.3))
+plt.figure(figsize=(4, 4))
 #plt.rcParams['font.family'] = 'Ricty'
 #plt.rcParams['font.family'] = 'Meiryo'
 plt.rcParams["font.size"] = 22
