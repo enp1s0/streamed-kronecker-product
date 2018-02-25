@@ -10,7 +10,7 @@ const int DEF_N = 200;
 const int C = 30;
 
 // 計算回数
-const int CALC = 10;
+const int CALC = 100;
 
 // A kp B * vec(X)
 void k(float *A,float *B,float *X,float *R,int N,cublasHandle_t cublas){
